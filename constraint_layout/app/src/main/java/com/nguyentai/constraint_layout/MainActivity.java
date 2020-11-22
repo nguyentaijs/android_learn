@@ -21,12 +21,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String userName = edtUserName.getText().toString();
-                String email = edtEmail.getText().toString();
-                if (userName.isEmpty() || email.isEmpty()) {
-                    Toast.makeText(MainActivity.this, "You have to input all the fields", Toast.LENGTH_LONG).show();
-                } else {
-                    String toastMessage = "Register succesfully!\nWelcome " + userName + "(" + email + ")";
-                    Toast.makeText(MainActivity.this, toastMessage, Toast.LENGTH_LONG).show();
+                    String email = edtEmail.getText().toString();
+                    if (userName.isEmpty() || email.isEmpty()) {
+                        Toast.makeText(MainActivity.this, "You have to input all the fields", Toast.LENGTH_LONG).show();
+                    } else {
+                        String toastMessage = "Register succesfully!\nWelcome " + userName + "(" + email + ")";
+                        Toast.makeText(MainActivity.this, toastMessage, Toast.LENGTH_LONG).show();
                 }
             }
         });
