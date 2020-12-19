@@ -8,7 +8,11 @@ import androidx.appcompat.widget.ButtonBarLayout;
 import android.os.Bundle;
 import android.os.UserHandle;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,35 +25,42 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.nguyentai.firebasedb.entities.User;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
     DatabaseReference dbRef;
-
-    TextView txtTitle;
-    static Button btnAndroid;
-    static Button btnIOS;
+    ListView lvTitle;
+    List<String> lstUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        txtTitle = (TextView) findViewById(R.id.txtTitle);
-        btnAndroid = (Button) findViewById(R.id.buttonAndroid);
-        btnIOS = (Button) findViewById(R.id.buttonIOS);
-
         dbRef = FirebaseDatabase.getInstance().getReference();
 
-        dbRef.child("appTitle").push().setValue("Random title");
+        User newUser = new User("taint", "Nguyen Thanh Tai", "random");
+        User newUser2 = new User("tuanna", "Nguyen Anh Tuan", "random2");
+
+        //dbRef.child("usr").push().setValue(newUser);
+        //dbRef.child("usr").push().setValue(newUser2);
+
+        lvTitle = (ListView) findViewById(R.id.lvTitles);
+        lstUser = new ArrayList<>();
+        ArrayAdapter<String> adapterTitle = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, lstUser);
+        lvTitle.setAdapter((ListAdapter) adapterTitle);
 
         // Listener for data changes
-        dbRef.child("appTitle").addChildEventListener(new ChildEventListener() {
+        dbRef.child("usr").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                txtTitle.setText(txtTitle.getText() + snapshot.getValue().toString() + "\n");
+               User usr = snapshot.getValue(User.class);
+               lstUser.add(usr.getUserId() + " - " + usr.getDisplayName());
+               adapterTitle.notifyDataSetChanged();
             }
 
             @Override
@@ -70,22 +81,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
-
-        // Button Android event
-        btnAndroid.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dbRef.child("appTitle").push().setValue(btnAndroid.getText());
-            }
-        });
-
-        // Button iOS event
-        btnIOS.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dbRef.child("appTitle").push().setValue(btnIOS.getText());
             }
         });
     }
