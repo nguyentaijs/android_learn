@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "757347027156",
+    "project_id": "nguyentaijs-getstarted",
+    "storage_bucket": "nguyentaijs-getstarted.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:757347027156:android:6869dceb55abf09be61341",
+        "android_client_info": {
+          "package_name": "com.nguyentai.constraint_layout"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "757347027156-aqkv2a99n05go9v218hfgt5ih1aossqh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVV93Y7PeRCuw2eCTgflVYKDuGzldJ8Jw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "757347027156-aqkv2a99n05go9v218hfgt5ih1aossqh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
