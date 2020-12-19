@@ -1,10 +1,15 @@
 package com.nguyentai.firebasedb;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.os.UserHandle;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.nguyentai.firebasedb.entities.User;
@@ -39,6 +44,15 @@ public class MainActivity extends AppCompatActivity {
 
         //dbRef.child("ages").setValue(ages);
 
-        dbRef.child("ages").push().setValue(ages);
+        dbRef.child("ages").push().setValue(ages, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                if (error == null) {
+                    Toast.makeText(MainActivity.this, "New ages updated", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(MainActivity.this, String.format("Failure in saving DB, %1", error.getMessage()), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }
