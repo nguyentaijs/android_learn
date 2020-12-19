@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -42,40 +43,28 @@ public class MainActivity extends AppCompatActivity {
 
         dbRef = FirebaseDatabase.getInstance().getReference();
 
-        // Create single key value pair
-        dbRef.child("stringValue").setValue("Hello world");
-
-        // Create class
-        User sampleUser = new User("taint", "Nguyen Thanh Tai", "random");
-        dbRef.child("user").setValue(sampleUser);
-
-        // Map
-        Map<String, Integer> ages = new HashMap<>();
-        ages.put("taint", 27);
-        ages.put("tuanna", 54);
-        ages.put("thuynt", 52);
-        ages.put("tuna", 33);
-
-        //dbRef.child("ages").setValue(ages);
-
-        dbRef.child("ages").push().setValue(ages, new DatabaseReference.CompletionListener() {
-            @Override
-            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                if (error == null) {
-                    Toast.makeText(MainActivity.this, "New ages updated", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(MainActivity.this, String.format("Failure in saving DB, %1", error.getMessage()), Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        dbRef.child("appTitle").setValue("Random title");
+        dbRef.child("appTitle").push().setValue("Random title");
 
         // Listener for data changes
-        dbRef.child("appTitle").addValueEventListener(new ValueEventListener() {
+        dbRef.child("appTitle").addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                txtTitle.setText(snapshot.getValue().toString());
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                txtTitle.setText(txtTitle.getText() + snapshot.getValue().toString() + "\n");
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
             }
 
             @Override
@@ -88,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         btnAndroid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dbRef.child("appTitle").setValue(btnAndroid.getText());
+                dbRef.child("appTitle").push().setValue(btnAndroid.getText());
             }
         });
 
@@ -96,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         btnIOS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dbRef.child("appTitle").setValue(btnIOS.getText());
+                dbRef.child("appTitle").push().setValue(btnIOS.getText());
             }
         });
     }
