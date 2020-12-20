@@ -1,0 +1,98 @@
+{
+  "project_info": {
+    "project_number": "656736626459",
+    "firebase_url": "https://fir-db-be499-default-rtdb.firebaseio.com",
+    "project_id": "fir-db-be499",
+    "storage_bucket": "fir-db-be499.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:656736626459:android:467dd02976cec872ca95be",
+        "android_client_info": {
+          "package_name": "com.nguyentai.firebaseauthentication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "656736626459-a6oqqb6c51f3im7vhppcm060sfntdqlt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAskSi0i2icKOw6_QhrEnw4bXXS0Ykt8p8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "656736626459-a6oqqb6c51f3im7vhppcm060sfntdqlt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:656736626459:android:88ede70972dcecbeca95be",
+        "android_client_info": {
+          "package_name": "com.nguyentai.firebaseauthenticationlogin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "656736626459-a6oqqb6c51f3im7vhppcm060sfntdqlt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAskSi0i2icKOw6_QhrEnw4bXXS0Ykt8p8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "656736626459-a6oqqb6c51f3im7vhppcm060sfntdqlt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:656736626459:android:5f093de96a9e0e97ca95be",
+        "android_client_info": {
+          "package_name": "com.nguyentai.firebasedb"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "656736626459-a6oqqb6c51f3im7vhppcm060sfntdqlt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAskSi0i2icKOw6_QhrEnw4bXXS0Ykt8p8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "656736626459-a6oqqb6c51f3im7vhppcm060sfntdqlt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
