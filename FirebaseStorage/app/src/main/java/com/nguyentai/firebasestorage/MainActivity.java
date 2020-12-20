@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
@@ -16,8 +17,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -33,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     ImageView imgView;
     Button btnUpload;
     FirebaseStorage fStorage;
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference fDb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
         imgView = (ImageView) findViewById(R.id.imageViewImage);
         btnUpload = (Button) findViewById(R.id.buttonUpload);
         fStorage = FirebaseStorage.getInstance("gs://fir-db-be499.appspot.com");
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        fDb = firebaseDatabase.getReference();
 
         // On click even btnUpload
         btnUpload.setOnClickListener(new View.OnClickListener() {
@@ -67,20 +77,45 @@ public class MainActivity extends AppCompatActivity {
 
                 UploadTask uploadTask = imgRef.putBytes(imgbytes);
 
-                uploadTask.addOnFailureListener(new OnFailureListener() {
+                final String[] fileName = new String[1];
+
+                uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                     @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e(TAG, "Error", e);
-                        Toast.makeText(MainActivity.this, "Failed, msg:" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                    public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                        if (!task.isSuccessful()) {
+                            throw task.getException();
+                        }
+                        // Continue with the task to get the download URL
+                        return imgRef.getDownloadUrl();
                     }
-                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                }).addOnCompleteListener(new OnCompleteListener<Uri>() {
                     @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        Log.i(TAG, taskSnapshot.getMetadata().toString());
-                        Toast.makeText(MainActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                    public void onComplete(@NonNull Task<Uri> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(MainActivity.this, "Upload file completed", Toast.LENGTH_SHORT).show();
+                            Uri downloadUri = task.getResult();
+                            if (downloadUri == null)
+                                return;
+                            else {
+                                fDb.child("uploadFile").push().setValue(downloadUri.toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Toast.makeText(MainActivity.this, "Save to DB successfully", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            Toast.makeText(MainActivity.this, "Save to DB failure", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+                                return;
+                            }
+                        } else {
+                            Toast.makeText(MainActivity.this, "Upload file failed", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
             }
+
         });
 
         // Onclick event imgView
