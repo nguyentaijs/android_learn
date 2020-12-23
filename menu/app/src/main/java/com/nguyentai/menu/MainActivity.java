@@ -3,7 +3,9 @@ package com.nguyentai.menu;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +16,7 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     Button btnPopupMenu;
+    Button btnContextMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,13 +24,43 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         btnPopupMenu = (Button) findViewById(R.id.buttonPopupMenu);
+        btnContextMenu = (Button) findViewById(R.id.buttonContextMenu);
 
+        registerForContextMenu(btnContextMenu);
+
+        // Pop up menu
         btnPopupMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showMenu();
             }
         });
+
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        getMenuInflater().inflate(R.menu.menu_context, menu);
+        menu.setHeaderTitle("Select color");
+
+        super.onCreateContextMenu(menu, v, menuInfo);
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menuRed:
+                btnContextMenu.setBackgroundColor(Color.RED);
+                break;
+            case R.id.menuGreen:
+                btnContextMenu.setBackgroundColor(Color.GREEN);
+                break;
+            case R.id.menuYellow:
+                btnContextMenu.setBackgroundColor(Color.YELLOW);
+                btnContextMenu.setTextColor(Color.BLACK);
+                break;
+        }
+        return super.onContextItemSelected(item);
     }
 
     private void showMenu() {
