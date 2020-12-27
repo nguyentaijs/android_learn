@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import java.util.List;
+
 public class SecondActivity extends AppCompatActivity {
 
     TextView tvResult;
@@ -23,6 +25,18 @@ public class SecondActivity extends AppCompatActivity {
         // Receive string value from main
         result += mainIntent.getStringExtra("StringValue");
         result += "\n";
+
+        // Receive array values
+        List<String> arrayResult = mainIntent.getStringArrayListExtra("ArrayValue");
+        for (String hero: arrayResult) {
+            result += hero;
+            result += ", ";
+        }
+
+        // Receive object
+        Student stu = (Student) mainIntent.getSerializableExtra("Student");
+
+        result += stu.toString();
 
         tvResult.setText(result);
     }
