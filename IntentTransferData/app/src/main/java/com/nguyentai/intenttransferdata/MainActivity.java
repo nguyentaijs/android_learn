@@ -43,6 +43,14 @@ public class MainActivity extends AppCompatActivity {
                 Student stu = new Student("Tai", 20);
                 toSecondIntent.putExtra("Student", stu);
 
+                // Transfer bundle
+                Bundle mainBundle = new Bundle();
+                mainBundle.putString("BundleStringValue", "Bundle display string");
+                mainBundle.putStringArrayList("BundleArrayValue", (ArrayList<String>) heroes);
+                mainBundle.putSerializable("BundleStudent", stu);
+
+                toSecondIntent.putExtra("Bundle", mainBundle);
+
                 startActivity(toSecondIntent);
             }
         });
